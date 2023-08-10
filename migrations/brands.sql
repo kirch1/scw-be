@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS brands
+(
+    id SERIAL PRIMARY KEY,
+    brand VARCHAR NOT NULL
+)
