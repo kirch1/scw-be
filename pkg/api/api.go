@@ -8,12 +8,23 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 	"github.com/go-pg/pg/v10"
 )
 
 func StartAPI(pgdb *pg.DB) *chi.Mux {
 	//get the router
 	r := chi.NewRouter()
+
+	//cors options
+	corsOptions := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:5173"}, // List of allowed origins
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+		AllowCredentials: true,
+		MaxAge:           300, // Maximum cache age in seconds
+	})
+	r.Use(corsOptions.Handler)
 
 	//add middleware, in this case store DB to use later
 	r.Use(middleware.Logger, middleware.WithValue("DB", pgdb))
